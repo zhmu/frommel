@@ -1111,7 +1111,7 @@ ncp_handle_ferase (int c, char* data, int size) {
     name_len = GET_BE8 (data); data++;
     bcopy (data, name, name_len);
 
-    DPRINTF (9, LOG_NCP, "[INFO] [%u] NCP 68: Erase file (dh=%u,attr=%u,name='%s')\n", dh, attr, name);
+    DPRINTF (9, LOG_NCP, "[INFO] [%u] NCP 68: Erase file (dh=%u,attr=%u,name='%s')\n", c, dh, attr, name);
 
     // lowercase the filename
     for (i = 0; i < name_len; i++) name[i] = tolower (name[i]);
