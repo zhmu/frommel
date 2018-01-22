@@ -1,0 +1,42 @@
+Frommel CONServ Protocol			  	  (c) 2002 Rink Springer
+--------------------------------------------------------------------------------
+
+Frommel uses the CONServ protocol (short for Console Protocol, and Dutch for
+'can' :). This powerful protocol is responsible for client-server remote
+console, as well as clustering services.
+
+CONServ operates over the IPX protocol. It uses socket 0x45f for this purpose.
+Each connected clients has a so-called session number. This uniquely identifies
+the client, as well as keeps track of the internal state.
+
+CONServ request packet looks like this (all values are in bytes).
+
++--------+--------+------------------------------------------------------------+
+| Offset | Size   | Description                                                |
++--------+--------+------------------------------------------------------------+
+|      0 |    2   | Packet type (0x6666 for a request)                         |
+|      2 |    2   | Session ID                                                 |
+|      4 |    2   | Command code                                               |
+|      6 | varies | Command code                                               |
++--------+--------+------------------------------------------------------------+
+
+All currently supported commands are:
+
++--------------+---------------------------------------------------------------+
+| Command code | Description                                                   |
++--------------+---------------------------------------------------------------+
+|            0 | HELLO - Requests a session                                    |
+|            1 | GETLOGINKEY - Requests a login key                            |
+|            2 | AUTH - Authenticate ourselves                                 |
+|            3 | DISCON - Disconnect from the server                           |
+|            4 | DOWN - Down the server                                        |
+|            5 | LQUERY - Query login status                                   |
+|            6 | LENABLE - Enable logins                                       |
+|            7 | LDISABLE - Disable logins                                     |
+|            8 | BROADCAST - Broadcast message                                 |
+|            9 | GETINFO - Query server information                            |
+|           10 | GETCON - Query connection information                         |
+|           11 | CLEARCONN - Clear connection                                  |
+|           12 | GETSESS - Get session information                             |
+|           13 | GETSAPINFO - Get SAP information                              |
++--------------+---------------------------------------------------------------+

@@ -1,0 +1,31 @@
+Trustee datafiles
+-----------------
+
+In Frommel, trustees are stored in one file, $TRUSTEE.SYS. This file will
+automatically be protected by the server (therefore, file scan, open, delete
+and the likes will not harm it).
+
+This file, $TRUSTEE.SYS, will be stored in every directory. If the rights
+are needed for a certain directory, the daemon will first try to open
+$TRUSTEE.SYS for in that directory. If no valid entries are found, it will
+go one level down and check that $TRUSTEE.SYS file. It will keep doing this
+until it has either found an appropriate trustee for the object or until it
+has reached the root directory.
+
+The daemon will also check every object the user is security-equilivant to
+(but not deeper than that, not the security equilivances of that object)
+
+Supervisor (or equivelent) objects will always cause SRWCEMFA to be returned,
+and thus no futher checking will be done.
+
+The format of the $TRUSTEE.SYS files is (all numbers are in byets)
+
++--------+--------+---------------------+
+| Offset | Length | Description         |
++--------+--------+---------------------+
+|      0 |      4 | Object ID           |
+|      4 |      2 | Rights		|
++--------+--------+---------------------+
+
+This structure will be repeated for each trustee. All numbers are stored in
+little-endian notation (therefore, highest byte first)
