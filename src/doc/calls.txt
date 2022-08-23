@@ -1,0 +1,109 @@
+Implemented calls
+-----------------
+
++ =	100% completed
+* =	Functional, but some things TODO
+! =	Dirty hack
+- =	Functionality unimplemented (but returns correct response to indicate
+				     this)
+
++	NCP 18: Get Volume Info with number
++	NCP 20: Get File server date and time
++	NCP 24: End of job
++	NCP 25: Logout
++	NCP 33: Negotiate buffer size
++	NCP 62: File search init
++	NCP 63: File search cont
++	NCP 66: Close file
++	NCP 67: Create file
++	NCP 68: Erase File
+*	NCP 69: Rename File
++	NCP 71: Get current size of file
++	NCP 72: Read from a file
++	NCP 73: Write to a file
++	NCP 76: Open file
+-	NCP 97: Get big packet NCP max packet size
+-	NCP 101: Packet burst request
+
+NCP 21 subfunctions
+-------------------
+
+*	NCP 21 0: Send broadcast message
++	NCP 21 1: Get broadcast message
++	NCP 21 2: Disable broadcasts
++	NCP 21 3: Enable broadcasts
++	NCP 21 9: Broadcast to console
++	NCP 21 11: Get broadcast message
+
+NCP 22 subfunctions
+-------------------
+
++	NCP 22 0: Set directory path
++	NCP 22 1: Get directory path
++	NCP 22 3: Get effective directory rights
++	NCP 22 5: Get volume number
++	NCP 22 6: Get volume name
++	NCP 22 10: Create directory
++	NCP 22 11: Delete directory
++	NCP 22 13: Add trustee to directory
++	NCP 22 18: Allocate a permanent directory handle
++	NCP 22 19: Allocate a temponary directory handle
++	NCP 22 20: Deallocate directory handle
++	NCP 22 21: Get volume info with handle
+*	NCP 22 30: Scan a directory
+-	NCP 22 32: Scan volume's user disk restrictions
++	NCP 22 38: Scan file or directory for extended trustees
++	NCP 22 39: Add trustee to directory
+*	NCP 22 41: Get object disk usuage and restrictions
++	NCP 22 42: Get effective rights for directory entry
++	NCP 22 43: Remove extended trustee from dir or file
+*	NCP 22 44: Get volume and purge information
+*	NCP 22 55: Get volume and purge information
+
+NCP 23 subfunctions
+-------------------
+
++	NCP 23 17: Get file server information
++	NCP 23 18: Get network serial number
+*	NCP 23 19: Get internet address
++	NCP 23 21: Get object connection list
++	NCP 23 22: Get station's logged info
++	NCP 23 23: Get login key
++	NCP 23 24: Keyed object login
+*	NCP 23 26: Get internet address
++	NCP 23 27: Get object connection list
++	NCP 23 28: Get station's logged info
++	NCP 23 50: Create bindery object
++	NCP 23 51: Delete bindery object
+*	NCP 23 53: Get bindery object ID
++	NCP 23 54: Get bindery object name
++	NCP 23 55: Scan bindery object
++	NCP 23 57: Create property
+-	NCP 23 60: Scan property
+*	NCP 23 61: Read property value
+*	NCP 23 62: Write property value
+*	NCP 23 65: Add bindery object to set
+*	NCP 23 66: Delete bindery object from set
+*	NCP 23 67: Is bindery object in set
++	NCP 23 68: Close bindery
++	NCP 23 69: Close bindery
++	NCP 23 70: Get bindery access level
+-	NCP 23 71: Scan bindery object trustee paths
++	NCP 23 72: Get bindery access level to an object
++	NCP 23 73: Is calling station a manager
++	NCP 23 74: Keyed verify password
+*	NCP 23 75: Keyed change password
++	NCP 23 200: Check console privileges
+*	NCP 23 201: Get file server description strings
++	NCP 23 205: Get file server login status
+*	NCP 23 209: Send console broadcast
+*	NCP 23 210: Clear connection number
++	NCP 23 211: Down file server
+
+NCP 34 subfunctions
+-------------------
+
++	NCP 34 0: TTS Is Available
+
+NCP 87 subfunctions
+-------------------

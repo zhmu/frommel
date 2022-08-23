@@ -1,0 +1,21 @@
+This project took up quite a lot of my time... when I was younger, I was quite
+a fan of Novell networks. However, having multiple servers here at my parent's
+home wasn't quite feasible (as I like FreeBSD a lot as well).
+
+So, I wanted to combine this; but the only Novell-like-servers were MARS_NWE and
+LWARED, which were both Linux-based at that time (Boris Popov has ported
+mars_nwe to FreeBSD since then).
+
+Therefore, I created my own Novell server, which contained the features I
+wanted. For example, it can store the bindery (Novell's database for
+users/groups/etc) in MySQL and PostgreSQL!
+
+Anyway, feel free to play with it; I couldn't test this because I no longer have
+any IPX networks here and refuse to rebuild a kernel. It compiles fine here
+on a FreeBSD box after two minor prototyping thingies.
+
+Feel free to play with it as you like; I'm sure someone will find it portable.
+It even had a web frontend (with templates), a console interface etc. Not bad,
+for code written during 2001-2002!
+
+Enjoy!

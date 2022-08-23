@@ -1,0 +1,13 @@
+Special thanks to:
+
+Boris Popov	  - Useful suggestions
+Martin Stover	  - MARS_NWE daemon, which helped me a lot
+Ales Dryak	  - LWARED daemon, which also helped me a lot
+Vivek Khera	  - Apache mod_mysql module, which was used to study the MySQL
+		    API
+W.J. Hengeveld	  - Answering my emails and years of Netware hacking which gave
+		    me a lot of things to work with
+Jef Poskanzer	  - His Acme Labs mini_httpd gave me good help when developing
+		    Frommel's FART web tool.
+Giuseppe Tanzilli - Apache mod_pgsql module, which was used to study the
+		    PostgreSQL API

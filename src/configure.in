@@ -1,0 +1,170 @@
+# Process this file with autoconf to produce a configure script.
+AC_INIT(src/server/main.c)
+AM_CONFIG_HEADER(include/defs.h)
+AM_INIT_AUTOMAKE(frommel, 2.0a)
+
+# Which OS is this?
+AC_CANONICAL_HOST
+case "$host" in
+   *freebsd*) # FreeBSD
+	      OS="FreeBSD"
+	      CFLAGS="$CFLAGS -DFREEBSD"
+	      ;;
+   *openbsd*) # OpenBSD
+	      OS="OpenBSD"
+	      CFLAGS="$CFLAGS -DOPENBSD"
+	      ;;
+   *)	      # Not supported
+	      AC_MSG_ERROR([This OS is not yet supported])
+	      ;;
+esac
+
+# Checks for programs.
+AC_PROG_CC
+AC_PROG_CXX
+AC_PROG_RANLIB
+
+# Use C++ to compile
+AC_REQUIRE_CPP
+
+# Checks for libraries
+AC_CHECK_LIB([ipx], [ipx_ntoa])
+
+# Checks for header files.
+AC_HEADER_DIRENT
+AC_HEADER_STDC
+AC_CHECK_HEADERS([fcntl.h netinet/in.h stdlib.h string.h sys/ioctl.h sys/mount.h sys/param.h sys/socket.h sys/time.h sys/vfs.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+AC_STRUCT_TM
+
+# Checks for library functions.
+AC_FUNC_ERROR_AT_LINE
+AC_PROG_GCC_TRADITIONAL
+AC_FUNC_MALLOC
+AC_FUNC_MEMCMP
+AC_TYPE_SIGNAL
+AC_FUNC_STAT
+AC_FUNC_STRFTIME
+AC_FUNC_VPRINTF
+AC_CHECK_FUNCS([bzero ftruncate memset mkdir rmdir select socket strcasecmp strchr strdup strncasecmp strrchr strtol])
+
+# Check for MySQL usuage
+AC_MSG_CHECKING([whether to enable MySQL binderies])
+AC_ARG_WITH(mysql,
+[  --with-mysql[=DIR]	  Enable MySQL binderies, look for the
+			  libraries/includes in DIR
+  --without-mysql	  Disable MySQL binderies (default)],
+[  case "$with_mysql" in
+    yes)
+	AC_MSG_RESULT(yes)
+	AC_CHECK_LIB([mysqlclient], [mysql_init], [], [AC_MSG_ERROR([MySQL libraries not found])])
+
+	AC_DEFINE(WITH_MYSQL)
+	MYSQL=1
+	;;
+    no)
+	AC_MSG_RESULT(no)
+	;;
+    *)
+	AC_MSG_RESULT(yes)
+
+	# add the additional paths
+	LDFLAGS="-L$with_mysql/lib -L$with_mysql/lib/mysql $LDFLAGS"
+	CPPFLAGS="-I$with_mysql/include $CPPFLAGS"
+
+	# check for it
+	AC_CHECK_LIB([mysqlclient], [mysql_init], [], [AC_MSG_ERROR([MySQL libraries not found])])
+	AC_DEFINE(WITH_MYSQL)
+	MYSQL=1
+	;;
+    esac ], AC_MSG_RESULT(no) )
+
+# Check for PostgreSQL usuage
+AC_MSG_CHECKING([whether to enable PostgreSQL binderies])
+AC_ARG_WITH(pgsql,
+[  --with-pgsql[=DIR]	  Enable PostgreSQL binderies, look for the
+			  libraries/includes in DIR
+  --without-pgsql	  Disable PostgreSQL binderies (default)],
+[  case "$with_mysql" in
+    yes)
+	AC_MSG_RESULT(yes)
+	AC_CHECK_LIB([pq], [PQconnectdb], [], [AC_MSG_ERROR([PostgreSQL libraries not found])])
+
+	AC_DEFINE(WITH_PGSQL)
+	PGSQL=1
+	;;
+    no)
+	AC_MSG_RESULT(no)
+	;;
+    *)
+	AC_MSG_RESULT(yes)
+
+	# add the additional paths
+	LDFLAGS="-L$with_pgsql/lib $LDFLAGS"
+	CPPFLAGS="-I$with_pgsql/include $CPPFLAGS"
+
+	# check for it
+	AC_CHECK_LIB([pq], [PQconnectdb], [], [AC_MSG_ERROR([PostgreSQL libraries not found])])
+	AC_DEFINE(WITH_PGSQL)
+	PGSQL=1
+	;;
+    esac ], AC_MSG_RESULT(no) )
+
+# Display the final bindery storage outcome
+AC_MSG_CHECKING([where the binderies will be stored])
+
+# MySQL binderies?
+if test x"$MYSQL" = x"1"; then
+    # yes. PostgreSQL binderies too?
+    if test x"$PGSQL" = x"1"; then
+	# yes. complain
+	AC_MSG_RESULT([MySQL + PostgreSQL])
+	AC_MSG_ERROR([Sorry, but you can't add both MySQL and PostgreSQL binderies at the same time])
+    fi
+    AC_MSG_RESULT([MySQL])
+else
+    # PostgreSQL binderies?
+    if test x"$PGSQL" = x"1"; then
+	# yes. show that
+        AC_MSG_RESULT([PostgreSQL])
+    else
+	# no. plain datafiles
+        AC_MSG_RESULT([binary datafiles])
+    fi
+fi
+
+# check for the web interface
+AC_MSG_CHECKING([whether to enable the web interface])
+AC_ARG_WITH(web-interface,
+[  --with-web-interface	  Enable HTTP web configuration interface
+  --without-web-inteface  Disable HTTP web configuration interface (default)],
+[  case "$with_web_interface" in
+    no)
+	AC_MSG_RESULT(no)
+	;;
+    *)  AC_MSG_RESULT(yes)
+
+	AC_DEFINE(WITH_WEB_INTERFACE)
+	;;
+    esac ], AC_MSG_RESULT(no) )
+
+# check whether to enable the console
+AC_MSG_CHECKING([whether to enable the server console])
+AC_ARG_WITH(console,
+[  --with-console	  Enable server command console
+  --without-console	  Disable server command console (default)],
+[  case "$with_console" in
+     no)
+	AC_MSG_RESULT(no)
+	;;
+     yes)
+	AC_MSG_RESULT(yes)
+	AC_DEFINE(WITH_CONSOLE)
+	;;
+    esac ], AC_MSG_RESULT(no) )
+
+AC_OUTPUT([Makefile src/Makefile src/lib/Makefile src/server/Makefile src/console/Makefile])

@@ -1,0 +1,89 @@
+Bindery (binary datafiles)
+--------------------------
+
+The Frommel bindery is stored in three files. These files are:
+
++--------------+---------------------------------------------------+
+| File name    | Description					   |
++--------------+---------------------------------------------------+
+| NET$OBJ.SYS  | This stores the objects			   |
+| NET$PROP.SYS | This stores the properties			   |
+| NET$VAL.SYS  | This stores the values of the properties	   |
++--------------+---------------------------------------------------+
+
+The format is 100% identical to what H.J. Hengeveld described in his
+BINDERY.FMT documentation file, on his homepage. It is believed Novell
+NetWare 3.12 uses exactly the same format.
+
+NET$OBJ.SYS
+-----------
+
+This file contains all objects known to the server. It is basically a repeated
+structure. This structure is:
+
++--------+--------+------------------------------------------------+
+| Offset | Length | Description					   |
++--------+--------+------------------------------------------------+
+|      0 |      4 | Object's unique ID				   |
+|      4 |      2 | Object's type				   |
+|      6 |      1 | Length of the object's name			   |
+|      7 |     47 | Object name					   |
+|     54 |      1 | Object flags				   |
+|     55 |      1 | Object security				   |
+|     56 |      4 | First property ID				   |
+|     60 |      4 | Reserved (unused by Frommel)		   |
++--------+--------+------------------------------------------------+
+
+All values are stored as Big Endian.
+
+For each record, [First Property ID] is the ID of the first property this object
+has. This ID can be looked up in NET$PROP.SYS, which is documented below. If the
+object has no properties, this will be set to 0xFFFFFFFF.
+
+NET$PROP.SYS
+------------
+
+This file contains the properties of all objects known to the server. It is
+basically a repeated structure. This structure is:
+
++--------+--------+------------------------------------------------+
+| Offset | Length | Description					   |
++--------+--------+------------------------------------------------+
+|      0 |      4 | Property's unique ID			   |
+|      4 |      1 | Length of the property's name		   |
+|      5 |     15 | Property name				   |
+|     20 |      1 | Property flag				   |
+|     21 |      1 | Property security				   |
+|     22 |      4 | Property's object ID			   |
+|     26 |      4 | Property's value ID			  	   |
+|     30 |      4 | Next property ID				   |
++--------+--------+------------------------------------------------+
+
+All values are stored as Big Endian.
+
+[Property's unique ID] is the ID [NET$OBJ.SYS->First Property ID] points at. It
+will be the first property of the object. [Property's value ID] is the value
+associated with the property (values are stored in NET$VAL.SYS, see below).
+Finally, [Next Property ID] points to the next property of this object, or
+0xFFFFFFFF if there are none.
+
+NET$VAL.SYS
+-----------
+
+This file contains the values of the properties of all objects known to the
+server. It is basically a repeated structure. This structure is:
+
++--------+--------+------------------------------------------------+
+| Offset | Length | Description					   |
++--------+--------+------------------------------------------------+
+|      0 |      4 | Value's unique ID			  	   |
+|      4 |      4 | Value's property ID				   |
+|      8 |      4 | Value's next ID				   |
+|     12 |      2 | Length of the value				   |
+|     14 |    128 | Value data					   |
++--------+--------+------------------------------------------------+
+
+[Value's unique ID] is the ID [NET$VAL.SYS->Property's value ID] points at.
+[Value's next ID] will point to the next value of this property, or 0xFFFFFFFF
+if there are none. [Length of the value] determines how much values there
+are (usually 1).
